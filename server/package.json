@@ -1,0 +1,14 @@
+{
+	"name": "sweepstake-cup",
+	"version": "1.0.0",
+	"scripts": {
+		"dev": "tsx watch src/bin/server.ts"
+	},
+	"devDependencies": {
+		"tsx": "^3.11.0",
+		"typescript": "^4.8.4"
+	},
+	"dependencies": {
+		"fastify": "^4.9.2"
+	}
+}
