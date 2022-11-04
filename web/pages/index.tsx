@@ -1,6 +1,10 @@
-export default function Home({ pools }) {
+interface HomeProps {
+	pools: number;
+}
+
+export default function Home(props: HomeProps) {
 	return (
-		<h1>Count: { pools }</h1>
+		<h1>Count: { props.pools }</h1>
 	)
 }
 
