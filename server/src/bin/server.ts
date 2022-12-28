@@ -1,6 +1,6 @@
 import Fastify from 'fastify'
 import cors from '@fastify/cors'
-import z from 'zod'
+import * as z from 'zod'
 import ShortUniqueId from 'short-unique-id'
 
 import { PrismaClient } from '@prisma/client'
@@ -56,12 +56,13 @@ async function bootstrap(){
                     code
                 })
         } catch (error) {
-            if (error.name == 'ZodError'){
+            if (error instanceof z.ZodError){
                 reply
                     .code(400)
                     .send({
                         status: false,
-                        message: 'Invalid field(s)',
+                        message: error.issues[0].message,
+                        invalidFields: error.issues[0].path[0]
                     })
             }
         }
