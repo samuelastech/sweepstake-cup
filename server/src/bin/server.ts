@@ -1,5 +1,8 @@
 import Fastify from 'fastify'
 import cors from '@fastify/cors'
+import z from 'zod'
+import ShortUniqueId from 'short-unique-id'
+
 import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient({
@@ -27,6 +30,42 @@ async function bootstrap(){
                 status: true,
                 pools
             })
+    })
+
+    fastify.post('/pools', async (request, reply) => {
+        const createPoolBody = z.object({
+            title: z.string()
+        })
+
+        try {
+            const { title } = createPoolBody.parse(request.body)
+            const generate = new ShortUniqueId({ length: 6 })
+            const code = String(generate()).toUpperCase()
+
+            await prisma.pool.create({
+                data: {
+                    title,
+                    code
+                }
+            })
+    
+            reply
+                .code(201)
+                .send({
+                    status: true,
+                    code
+                })
+        } catch (error) {
+            if (error.name == 'ZodError'){
+                reply
+                    .code(400)
+                    .send({
+                        status: false,
+                        message: 'Invalid field(s)',
+                    })
+            }
+        }
+
     })
 
     /**
