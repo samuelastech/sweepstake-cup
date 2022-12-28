@@ -33,13 +33,13 @@ async function bootstrap(){
     })
 
     fastify.get('/users/count', async (request, reply) => {
-        const user = await prisma.user.count()
+        const users = await prisma.user.count()
 
         reply
             .code(200)
             .send({
                 status: true,
-                user
+                users
             })
     })
 
