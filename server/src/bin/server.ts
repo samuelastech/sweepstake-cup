@@ -21,14 +21,14 @@ async function bootstrap(){
         origin: true,
     })
 
-    fastify.get('/pools/count', async (request, reply) => {
-        const pools = await prisma.pool.count()
+    fastify.get('/sweepstakes/count', async (request, reply) => {
+        const sweepstakes = await prisma.sweepstake.count()
 
         reply
             .code(200)
             .send({
                 status: true,
-                pools
+                sweepstakes
             })
     })
 
@@ -54,17 +54,17 @@ async function bootstrap(){
             })
     })
 
-    fastify.post('/pools', async (request, reply) => {
-        const createPoolBody = z.object({
+    fastify.post('/sweepstakes', async (request, reply) => {
+        const createSweepstakeBody = z.object({
             title: z.string()
         })
 
         try {
-            const { title } = createPoolBody.parse(request.body)
+            const { title } = createSweepstakeBody.parse(request.body)
             const generate = new ShortUniqueId({ length: 6 })
             const code = String(generate()).toUpperCase()
 
-            await prisma.pool.create({
+            await prisma.sweepstake.create({
                 data: {
                     title,
                     code

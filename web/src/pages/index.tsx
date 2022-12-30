@@ -1,5 +1,5 @@
 interface HomeProps {
-	poolCount: number;
+	sweepstakeCount: number;
 	guessCount: number;
 	userCount: number;
 }
@@ -18,20 +18,20 @@ import logoImg from '../assets/logo.svg'
 import { api } from '../lib/axios'
 
 export default function Home(props: HomeProps) {
-	const [poolTitle, setPoolTitle] = useState('')
+	const [sweepstakeTitle, setSweepstakeTitle] = useState('')
 
-	async function createPool(event: FormEvent) {
+	async function createSweepstake(event: FormEvent) {
 		event.preventDefault()
 
 		try {
-			const response = await api.post('pools', {
-				title: poolTitle
+			const response = await api.post('sweepstakes', {
+				title: sweepstakeTitle
 			})
 			
 			const { code } = response.data
 			await navigator.clipboard.writeText(code) // Copies the code to the clipboard
 			alert('Bolão criado com sucesso, o bolão foi copiado para a área de transferência!')
-			setPoolTitle('')
+			setSweepstakeTitle('')
 		} catch (error) {
 			console.log(error)
 			alert('Falha ao criar o bolão, tente novamente!')
@@ -55,15 +55,15 @@ export default function Home(props: HomeProps) {
 					</strong>
 				</div>
 
-				<form onSubmit={createPool} className='mt-10 flex gap-2'>
+				<form onSubmit={createSweepstake} className='mt-10 flex gap-2'>
 
 					<input 
 						className='flex-1 px-6 py-4 rounded bg-gray-800 border border-gray-600 text-sm text-gray-100'
 						placeholder='Qual nome do seu bolão?'
 						type="text"
 						required
-						onChange={event => setPoolTitle(event.target.value)}
-						value={poolTitle}
+						onChange={event => setSweepstakeTitle(event.target.value)}
+						value={sweepstakeTitle}
 					/>
 
 					<button
@@ -88,7 +88,7 @@ export default function Home(props: HomeProps) {
 					<div className='flex items-center gap-6'>
 						<Image src={iconCheckImg} alt='Check' />
 						<div className='flex flex-col'>
-							<span className='font-bold text-2xl'>+{props.poolCount}</span>
+							<span className='font-bold text-2xl'>+{props.sweepstakeCount}</span>
 							<span>Bolões criados</span>
 						</div>
 					</div>
@@ -113,15 +113,15 @@ export default function Home(props: HomeProps) {
  * Not getting response from Server
  */
 export const getStaticProps = async () => {
-	const [poolCountResponse, guessCountResponse, userCountResponse] = await Promise.all([
-		api.get('pools/count'),
+	const [sweepstakeCountResponse, guessCountResponse, userCountResponse] = await Promise.all([
+		api.get('sweepstakes/count'),
 		api.get('guesses/count'),
 		api.get('users/count')
 	])
 
 	return {
 		props: {
-			poolCount: poolCountResponse.data.pools,
+			sweepstakeCount: sweepstakeCountResponse.data.sweepstakes,
 			guessCount: guessCountResponse.data.guesses,
 			userCount: userCountResponse.data.users,
 		},

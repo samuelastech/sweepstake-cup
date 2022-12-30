@@ -6,15 +6,15 @@ async function main() {
     const user = await prisma.user.create({
         data: {
             name: 'John Doe',
-            email: 'john.doe@gmail.com',
+            email: 'foo@gmail.com',
             avatarUrl: 'https://github.com/samuelastech.png'
         }
     })
 
-    const pool = await prisma.pool.create({
+    const sweepstake = await prisma.sweepstake.create({
         data: {
-            title: 'Example Pool',
-            code: 'BOL123',
+            title: 'Example Sweepstake',
+            code: 'FOODOO',
             ownerId: user.id,
 
             participants: {
@@ -46,9 +46,9 @@ async function main() {
 
                     participant: {
                         connect: {
-                            userId_poolId: {
+                            userId_sweepstakeId: {
                                 userId: user.id,
-                                poolId: pool.id
+                                sweepstakeId: sweepstake.id
                             }
                         }
                     }
