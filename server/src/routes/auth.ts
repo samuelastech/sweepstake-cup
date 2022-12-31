@@ -21,7 +21,7 @@ async function authRoutes(fastify: FastifyInstance) {
             })
             
             /**
-             * Fetching user's access token from Google
+             * Fetching user's from Google with the access token
              */
             const { access_token } = createUserBody.parse(request.body)
             const userResponse = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
@@ -33,7 +33,30 @@ async function authRoutes(fastify: FastifyInstance) {
 
             const userData = await userResponse.json()
             const userInfo = userInfoSchema.parse(userData)
-            return { userInfo }
+
+            /**
+             * Verifying if the user already exists
+             */
+            let user = await prisma.user.findUnique({
+                where: {
+                    googleId: userInfo.id
+                }
+            })
+            
+            /**
+             * New user
+             */
+            if(!user) {
+                user = await prisma.user.create({
+                    data: {
+                        googleId: userInfo.id,
+                        name: userInfo.name,
+                        email: userInfo.email,
+                        avatarUrl: userInfo.picture
+                    }
+                })
+            }
+
         } catch (error) {
             if (error instanceof z.ZodError){
                 reply
