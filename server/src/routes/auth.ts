@@ -57,6 +57,19 @@ async function authRoutes(fastify: FastifyInstance) {
                 })
             }
 
+            /**
+             * Generate a token
+             */
+            const token = fastify.jwt.sign({
+                name: user.name,
+                avatarUrl: user.avatarUrl
+            }, {
+                sub: user.id,
+                expiresIn: '15 min',
+            })
+
+            return { token }
+
         } catch (error) {
             if (error instanceof z.ZodError){
                 reply
