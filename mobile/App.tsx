@@ -1,7 +1,7 @@
 /**
  * Screens
  */
-import Sweepstake from './src/screens/Sweepstake'
+import SignIn from './src/screens/SignIn'
 
 /**
  * Components
@@ -37,7 +37,7 @@ export default function App() {
 					backgroundColor='transparent'
 					translucent
 				/>
-				{ fontsLoaded ? <Sweepstake /> : <Loading /> }
+				{ fontsLoaded ? <SignIn /> : <Loading /> }
 			</AuthContextProvider>
 		</NativeBaseProvider>
 	);
