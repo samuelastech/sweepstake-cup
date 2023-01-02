@@ -102,6 +102,18 @@ async function sweepstakeRoutes(fastify: FastifyInstance) {
             if(sweepstake.participants.length > 0)
                 throw new Error('You already joined this sweepstake')
             
+            if(!sweepstake.ownerId){
+                await prisma.sweepstake.update({
+                    where: { 
+                        id: sweepstake.id
+                    },
+
+                    data: {
+                        ownerId: request.user.sub
+                    }
+                })
+            }
+            
             // Everything's fine
             await prisma.participant.create({
                 data: {
@@ -114,7 +126,7 @@ async function sweepstakeRoutes(fastify: FastifyInstance) {
                 status: true,
                 message: 'User joined the sweepstake'
             })
-            
+
         } catch (error) {
             if(error instanceof Error && error.message === 'Pool not found'){
                 return reply.code(404).send({
