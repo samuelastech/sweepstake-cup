@@ -26,13 +26,35 @@ async function sweepstakeRoutes(fastify: FastifyInstance) {
             const generate = new ShortUniqueId({ length: 6 })
             const code = String(generate()).toUpperCase()
 
-            await prisma.sweepstake.create({
-                data: {
-                    title,
-                    code
-                }
-            })
-    
+            // When authenticated
+            try {
+                await request.jwtVerify()
+
+                await prisma.sweepstake.create({
+                    data: {
+                        title,
+                        code,
+                        ownerId: request.user.sub,
+
+                        participants: {
+                            create: {
+                                userId: request.user.sub
+                            }
+                        }
+                    }
+                })
+            }
+            
+            // When not authenticated
+            catch (error) {
+                await prisma.sweepstake.create({
+                    data: {
+                        title,
+                        code
+                    }
+                })
+            }
+
             reply
                 .code(201)
                 .send({
