@@ -1,4 +1,4 @@
-import { Heading, Text, VStack, useToast } from 'native-base';
+import { Heading, Text, useToast, VStack } from 'native-base';
 import { useState } from 'react'
 
 import { Header } from '../components/Header';
@@ -8,24 +8,16 @@ import Button from '../components/Button';
 import Logo from '../assets/logo.svg'
 
 import { api } from '../services/api';
-import { InterfaceToastProps } from 'native-base/lib/typescript/components/composites/Toast';
+import { createToast } from '../utils'
 
 export default function New() {
     const [title, setTitle] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const toast = useToast()
 
-    function createToast(title: string, error = true, placement: InterfaceToastProps['placement'] = 'top'){
-        return toast.show({
-            title,
-            placement,
-            bgColor: error ? 'red.500' : 'green.500'
-        })
-    }
-
     async function handlePoolCreate(){
         if(!title.trim()){
-            return createToast('Informe um nome para o seu bolão')
+            return createToast(toast, 'Informe um nome para o seu bolão')
         }
         setIsLoading(true)
         try {
