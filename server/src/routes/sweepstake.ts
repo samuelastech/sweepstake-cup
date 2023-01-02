@@ -77,7 +77,7 @@ async function sweepstakeRoutes(fastify: FastifyInstance) {
 
     })
 
-    fastify.post('/pools/:id/join', { onRequest: [authenticate] }, async (request, reply) => {
+    fastify.post('/sweepstakes/:id/join', { onRequest: [authenticate] }, async (request, reply) => {
         const joinPoolBody = z.object({
             code: z.string()
         })
@@ -142,6 +142,49 @@ async function sweepstakeRoutes(fastify: FastifyInstance) {
                 })
             }
         }
+    })
+
+    fastify.get('/sweepstakes', { onRequest: [authenticate] }, async (request, reply) => {
+        const sweepstake = await prisma.sweepstake.findMany({
+            where: {
+                participants: {
+                    some: {
+                        userId: request.user.sub
+                    }
+                }
+            },
+
+            include: {
+                _count: {
+                    select: { 
+                        participants: true,
+                    }
+                },
+
+                participants: {
+                    select: {
+                        id: true,
+                        user: {
+                            select: {
+                                avatarUrl: true
+                            }
+                        }
+                    },
+                    take: 4,
+                },
+
+                owner: {
+                    select: {
+                        name: true
+                    }
+                }
+            }
+        })
+
+        return reply.send({
+            status: true,
+            sweepstakes: sweepstake
+        })
     })
 }
 
