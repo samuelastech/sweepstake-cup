@@ -1,7 +1,7 @@
 import { VStack, Icon, FlatList } from 'native-base';
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Octicons } from '@expo/vector-icons'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useFocusEffect } from '@react-navigation/native'
 
 import { Header } from '../components/Header';
 import Button from '../components/Button';
@@ -32,9 +32,9 @@ export default function Sweepstake() {
         }
     }
 
-    useEffect(() => {
+    useFocusEffect(useCallback(() => {
         fetchSweepstakes()
-    }, [])
+    }, []))
 
     return (
         <VStack flex={1} bgColor='gray.900'>
