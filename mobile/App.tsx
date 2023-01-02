@@ -1,7 +1,7 @@
 /**
- * Screens
- */
-import SignIn from './src/screens/SignIn'
+ * Routes
+*/
+import Routes from './src/routes'
 
 /**
  * Components
@@ -37,7 +37,7 @@ export default function App() {
 					backgroundColor='transparent'
 					translucent
 				/>
-				{ fontsLoaded ? <SignIn /> : <Loading /> }
+				{ fontsLoaded ? <Routes /> : <Loading /> }
 			</AuthContextProvider>
 		</NativeBaseProvider>
 	);
