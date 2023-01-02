@@ -6,7 +6,7 @@ import { Header } from '../components/Header';
 import Button from '../components/Button';
 
 export default function Sweepstake() {
-    const navigation = useNavigation()
+    const { navigate } = useNavigation()
 
     return (
         <VStack flex={1} bgColor='gray.900'>
@@ -16,7 +16,7 @@ export default function Sweepstake() {
                 <Button
                     title='Buscar bolão por código'
                     leftIcon={<Icon as={Octicons} name='search' color='black' size='md' />}
-                    onPress={() => navigation.navigate('find')}
+                    onPress={() => navigate('find')}
                 />
             </VStack>
         </VStack>
