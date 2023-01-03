@@ -6,6 +6,7 @@ import { useTheme } from 'native-base'
 import New from '../screens/New'
 import Sweepstake from '../screens/Sweepstake'
 import Find from '../screens/Find'
+import Details from '../screens/Details'
 
 const { Navigator, Screen } = createBottomTabNavigator()
 
@@ -51,6 +52,12 @@ export default function AppRoutes(){
             <Screen
                 name='find'
                 component={Find}
+                options={{ tabBarButton: () => null }}
+            />
+
+            <Screen
+                name='details'
+                component={Details}
                 options={{ tabBarButton: () => null }}
             />
         </Navigator>
