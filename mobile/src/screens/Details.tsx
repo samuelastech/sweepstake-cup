@@ -1,6 +1,7 @@
 import { useRoute } from '@react-navigation/native';
 import { HStack, useToast, VStack } from 'native-base';
 import { useEffect, useState } from 'react';
+import { Share } from 'react-native';
 
 import { Header } from '../components/Header';
 import { Option } from '../components/Option';
@@ -38,6 +39,12 @@ export default function Details () {
         }
     }
 
+    async function handleCodeShare(){
+        await Share.share({
+            message: sweepstakeDetails.code
+        })
+    }
+
     useEffect(() => {
         fetchSweepstakeDetails()
     }, [id])
@@ -45,7 +52,12 @@ export default function Details () {
 
     return (
         <VStack flex={1} bgColor='gray.900'>
-            <Header title='Title...' showBackButton showShareButton />
+            <Header
+                title={sweepstakeDetails.title}
+                showBackButton
+                showShareButton
+                onShare={handleCodeShare}
+            />
             {
                 sweepstakeDetails._count?.participants > 0 ? 
                     <VStack px={5} flex={1}>

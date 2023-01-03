@@ -1,10 +1,10 @@
 import { Box } from 'native-base';
 
 interface Props {
-	poolId: string;
+	sweepstackId: string;
 }
 
-export function Guesses({ poolId }: Props) {
+export function Guesses({ sweepstackId }: Props) {
 
 	return (
 		<Box>
