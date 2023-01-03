@@ -77,7 +77,7 @@ export default function Details () {
                             />
                         </HStack>
                         
-                        <Guesses sweepstackId={sweepstakeDetails.id} />
+                        <Guesses sweepstackId={sweepstakeDetails.id} code={sweepstakeDetails.code} />
                     </VStack>
                 :
                 <VStack px={5} flex={1}>

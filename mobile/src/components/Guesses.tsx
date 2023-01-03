@@ -2,14 +2,16 @@ import { FlatList, useToast } from 'native-base';
 import { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import { createToast } from '../utils';
+import { EmptyMyPoolList } from './EmptyMySweepstakeList';
 import { Game, GameProps } from './Game';
 import Loading from './Loading';
 
 interface Props {
 	sweepstackId: string;
+	code: string
 }
 
-export function Guesses({ sweepstackId }: Props) {
+export function Guesses({ sweepstackId, code }: Props) {
 	const [isLoading, setIsLoading] = useState(true)
 	const [firstTeamPoints, setFirstTeamPoints] = useState('')
 	const [secondTeamPoints, setSecondTeamPoints] = useState('')
@@ -67,6 +69,8 @@ export function Guesses({ sweepstackId }: Props) {
 					onGuessConfirm={() => handleGuessConfirm(item.id)}
 				/>
 			)}
+			_contentContainerStyle={{ pb: 10 }}
+			ListEmptyComponent={() => <EmptyMyPoolList code={code} />}
 		/>
 	);
 }
