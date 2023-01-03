@@ -194,9 +194,7 @@ async function sweepstakeRoutes(fastify: FastifyInstance) {
 
         const { id } = getSweepstakeParams.parse(request.params)
 
-        const sweepstake = await prisma.sweepstake.findUnique({
-            where: { id },
-
+        const sweepstake = await prisma.sweepstake.findFirst({
             include: {
                 _count: {
                     select: { 
@@ -221,7 +219,16 @@ async function sweepstakeRoutes(fastify: FastifyInstance) {
                         name: true
                     }
                 }
-            }
+            },
+            
+            where: {
+                id,
+                participants: {
+                    some: {
+                        userId: request.user.sub
+                    }
+                }
+            },
         })
 
         return reply.send({
