@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Share } from 'react-native';
 
 import { Header } from '../components/Header';
+import { Guesses } from '../components/Guesses';
 import { Option } from '../components/Option';
 import { PoolPros } from '../components/SweepstakeCard';
 import { PoolHeader } from '../components/SweepstakeHeader';
@@ -75,6 +76,8 @@ export default function Details () {
                                 onPress={() => setSelectedOption('ranking')}
                             />
                         </HStack>
+                        
+                        <Guesses sweepstackId={sweepstakeDetails.id} />
                     </VStack>
                 :
                 <VStack px={5} flex={1}>
